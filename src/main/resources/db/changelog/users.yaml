@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: users
+      author: Morozov
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(200)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: age
+                  type: int
+                  constraints:
+                    nullable: true
+        - addAutoIncrement:
+            columnName: id
+            type: int
+            generationType: IDENTITY
+            incrementBy: 1
+            startWith: 1
+            tableName: users
