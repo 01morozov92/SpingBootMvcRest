@@ -2,6 +2,7 @@ package com.myApp.controllers;
 
 import com.myApp.db.DAO.UserDAO;
 import com.myApp.db.model.User;
+import com.myApp.exceptions.ControllerExceptions;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,12 +13,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.http.ResponseEntity.*;
+import static org.springframework.http.ResponseEntity.noContent;
+import static org.springframework.http.ResponseEntity.notFound;
 
 @RequestMapping("/users")
 @RequiredArgsConstructor
 @RestController
-class UserController {
+class UserController extends ControllerExceptions {
     @NonNull
     private final UserDAO userDao;
 
@@ -27,9 +29,9 @@ class UserController {
     }
 
     @GetMapping("/{userId}")
-    ResponseEntity<User> findOne(@PathVariable Long userId) {
-        return userDao.findById(userId)
-                .map(ResponseEntity::ok).orElse(notFound().build());
+    @ResponseStatus(HttpStatus.OK)
+    User findOne(@PathVariable Long userId) {
+        return userDao.findById(userId);
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -39,9 +41,11 @@ class UserController {
     }
 
     @DeleteMapping("/{userId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     ResponseEntity<?> delete(@PathVariable Long userId) {
-        ResponseEntity<?> user = userDao.findById(userId).isEmpty() ? notFound().build() : noContent().build();
+        Optional<User> user = Optional.ofNullable(userDao.findById(userId));
+        ResponseEntity<?> response = user.isEmpty() ? notFound().build() : noContent().build();
         userDao.removeUserById(userId);
-        return user;
+        return response;
     }
 }

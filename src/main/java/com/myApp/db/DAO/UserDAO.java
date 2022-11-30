@@ -2,6 +2,7 @@ package com.myApp.db.DAO;
 
 import com.myApp.db.model.User;
 import com.myApp.db.repo.UserRepository;
+import com.myApp.exceptions.user.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,8 +22,9 @@ public class UserDAO {
         this.userRepository = userRepository;
     }
 
-    public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
+    public User findById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        return user.orElseThrow(UserNotFoundException::new);
     }
 
     public List<User> findAllUsers() {
