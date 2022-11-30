@@ -5,12 +5,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserNotFoundExceptionInfo {
+public class UserExceptionInfo {
 
     private String ex;
     private String url;
 
-    public UserNotFoundExceptionInfo(StringBuffer url, RuntimeException ex) {
+    public UserExceptionInfo(StringBuffer url, RuntimeException ex) {
         this.url = String.valueOf(url);
         this.ex = ex.getLocalizedMessage();
     }

@@ -33,6 +33,7 @@ public class UserDAO {
         return users;
     }
 
+    @Transactional
     public void removeUser(User user) {
         userRepository.delete(user);
     }

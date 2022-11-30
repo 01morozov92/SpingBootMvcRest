@@ -3,11 +3,13 @@ package com.myApp.controllers;
 import com.myApp.db.DAO.UserDAO;
 import com.myApp.db.model.User;
 import com.myApp.exceptions.ControllerExceptions;
+import jakarta.validation.Valid;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,7 +37,8 @@ class UserController extends ControllerExceptions {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<User> insert(@RequestBody User user) {
+    ResponseEntity<User> insert(@RequestBody @Valid User user, BindingResult bindingResult) {
+        createErrorMessageFromValidation(bindingResult);
         userDao.save(user);
         return ResponseEntity.ok(user);
     }
