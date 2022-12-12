@@ -18,7 +18,6 @@ public class ControllerExceptions {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler({UserNotFoundException.class})
     UserExceptionInfo handleNotFound(HttpServletRequest req) {
-        System.out.println();
         return new UserExceptionInfo(req.getRequestURL(),
                 new UserNotFoundException("Пользователь не найден"));
     }
